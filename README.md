@@ -1,208 +1,95 @@
-# CS7IS5 – Adaptive Applications  
-## Clarity Layer (Team Kojack)
-![React](https://img.shields.io/badge/React-19-blue)
-![TypeScript](https://img.shields.io/badge/TypeScript-Strict-blue)
-![Vite](https://img.shields.io/badge/Vite-7-purple)
-![TailwindCSS](https://img.shields.io/badge/TailwindCSS-Enabled-38BDF8)
-![License](https://img.shields.io/badge/License-MIT-green)
----
+<p align="center">
+  <img src="docs/assets/logo.png" alt="Clarity Layer" width="320">
+</p>
 
-## Project Overview
+<p align="center"><strong>An adaptive reading workspace that explains every change it makes.</strong></p>
 
-**Clarity Layer** is a scrutable adaptive reading web application designed to support users with diverse cognitive and learning needs when reading digital documents.
+<p align="center">
+  <a href="https://github.com/leahweldon/Clarity-Layer/actions/workflows/build.yml"><img src="https://github.com/leahweldon/Clarity-Layer/actions/workflows/build.yml/badge.svg" alt="Build"></a>
+  <img src="https://img.shields.io/badge/React-19-61dafb" alt="React 19">
+  <img src="https://img.shields.io/badge/TypeScript-strict-3178c6" alt="TypeScript">
+  <img src="https://img.shields.io/badge/Vite-7-646cff" alt="Vite 7">
+  <img src="https://img.shields.io/badge/license-MIT-green" alt="MIT licence">
+</p>
 
-The system adapts text presentation (e.g., chunking, bionic emphasis, glossary support) based on explicit user preferences and lightweight behavioural signals, while ensuring all adaptive decisions remain transparent and user-controllable.
+![Onboarding with live bionic-reading preview and persona presets](docs/assets/onboarding.png)
 
-This repository contains the frontend proof-of-concept implementation.
+Reading tools tend to offer a zoom button and a dark mode, and leave the reader to fix everything else. Clarity Layer adapts how a document is presented (chunking dense passages, bionic emphasis, glossary support, typography) based on the reader's stated preferences and simple behavioural signals like rereading and long pauses. The defining constraint is **scrutability**: every adaptation is logged, explained in plain language and reversible.
 
----
+Built by Team Kojack for CS7IS5 Adaptive Applications at Trinity College Dublin (2026).
 
-## Implemented Features
+## Features
 
-### Onboarding
-- Two-step setup flow
-- Support level selection (low / medium / high)
-- Stereotype-based presets (e.g., ADHD, Dyslexia)
-- Accessibility settings:
-  - Font size
-  - Line spacing
-  - Theme (light / dark / high contrast)
-- Live preview of adaptation effects
+- **Onboarding with persona presets:** Default, ADHD Focus, Dyslexia Support and Visual Impairment profiles solve the cold-start problem; every setting stays editable, with a live preview.
+- **Adaptive reading aids:** chunking, bionic reading, glossary highlighting with a personal dictionary, and font size, spacing, line width and theme controls.
+- **Behavioural signals:** scroll-backs of more than 60px count as rereads and three minutes of inactivity as a long pause. Both feed context-sensitive suggestions, with cooldowns tied to the chosen support level.
+- **Scrutability panel:** *Your Model* shows what the system believes, *Why* logs every adaptation (labelled info, suggestion or auto), and *Controls* lets the reader override anything or lock the layout entirely.
+- **Session summary:** reading time, adjustments, model changes, saved vocabulary and an exportable adaptation log.
+- **Documents and accounts:** paste text or upload a PDF; Clerk sign-in links preferences and saved documents to an account.
 
-### Document Management
-- Paste text input
-- Simulated document upload
-- Document history view
-- Client-side persistence (localStorage)
+![Session summary with adaptation log, saved dictionary and feedback](docs/assets/scrutability-log.png)
 
-### Reading Workspace
-- Bionic reading mode
-- Intelligent chunking
-- Glossary term support
-- Reading progress indicator
-- Support intensity controls
-- Layout lock option
-- Adaptive prompts (rule-based)
-- Encouragement and distraction nudges
-- Scrutability panel:
-  - **Your Model**
-  - **Why This Changed**
-  - **Controls**
+## How it works
 
-### Session Summary
-- Reading time statistics
-- Interaction tracking (scroll-backs, pauses, toggles)
-- Model change log
-- Concept confidence (simulated)
-- Low-effort feedback options
-- Adaptation log export
+The user model has three layers, kept separate so the interface can always show what the reader *chose* versus what the system *inferred*:
 
----
+| Layer | Holds | Source |
+|---|---|---|
+| **Preferences** | Reading goal, support level, accessibility settings, enabled features | Explicit: onboarding and controls |
+| **Inferred support** | Sections flagged as difficult, inferred feature preferences | Derived from behaviour |
+| **Session interaction** | Reading time, scroll-backs, pauses, feature toggles | Observed live, reset each session |
 
-## Technology Stack
+![Layered user model: explicit inputs and implicit signals feed the model, which drives the adaptation engine](docs/assets/user-model.png)
 
-### Frontend
-- React (TypeScript)
-- Vite
-- Tailwind CSS
-- shadcn/ui (Radix-based components)
-- Lucide icons
+Adaptation is deliberately **rule-based rather than learned**. A machine-learned model might adapt more precisely, but its decisions would be hard to explain, and the *Why* panel would have nothing honest to show. Every prompt can be traced to a specific trigger.
 
-### Storage
-- `localStorage` (proof-of-concept persistence layer)
+**Evaluation (scenario-based):** adaptive prompts triggered correctly in 5 of 5 scenarios, accepted prompts updated the user model in the same render cycle, all 4 persona presets applied the correct configuration, and Layout Lock suppressed 100% of prompts.
 
-### Architecture
-- Client-side rule-based adaptation
-- Context-based global state management
-- Modular feature-based folder structure
+## Tech stack
 
----
+React 19 · TypeScript · Vite 7 · Tailwind CSS · shadcn/ui and Radix UI · React Router · Clerk · PDF.js · `localStorage` for preferences, with session state held in React Context.
 
-## Getting Started
+## Getting started
 
-### 1. Navigate to the frontend application
+Requires Node.js 20.19+ or 22.12+ and a free [Clerk](https://clerk.com) application.
 
 ```bash
 cd app
-```
-
-### 2. Configure environment variables
-
-Create an `app/.env.local` file and add the team's Clerk publishable key:
-
-```env
-VITE_CLERK_PUBLISHABLE_KEY=pk_test_your_key_here
-```
-
-For more detail, see `app/CLERK_SETUP.md`.
-
-### 3. Install dependencies
-
-```bash
+cp .env.example .env.local   # add your Clerk publishable key
 npm install
-```
-
-### 4. Run the development server
-
-```bash
 npm run dev
 ```
 
-The application will start locally at:
-http://localhost:5173
+Then open http://localhost:5173. [`app/CLERK_SETUP.md`](app/CLERK_SETUP.md) walks through the Clerk configuration.
 
----
+## Project structure
 
-## Environment Requirements
-
-- Node.js 20.19+ (22+ recommended)
-- npm 10+
-
-Check your versions:
-
-```bash
-node -v
-npm -v
+```text
+app/src/
+├── features/
+│   ├── onboarding/     # Persona presets, preferences, live preview
+│   ├── documents/      # Paste, PDF upload, history
+│   ├── reader/         # Reader, content pane, adaptive prompts, nudges, side panel, glossary
+│   ├── summary/        # Session summary and adaptation log
+│   ├── personas/
+│   └── auth/           # Clerk sign-in and protected routes
+├── shared/
+│   ├── state/          # AppContext: the user model
+│   ├── layout/
+│   └── api/
+└── components/ui/      # shadcn/ui components
 ```
 
-If using nvm to upgrade Node:
+## Team
 
-```bash
-nvm install 22
-nvm use 22
-```
+**Tanmay Birari · Liam Byrne · Petra Marcokova · Martha Ryan · Leah Weldon**. See [CONTRIBUTIONS.md](CONTRIBUTIONS.md) for who built what.
 
----
+**My contribution (Leah Weldon):** the concept grew out of my own experience as a reader, and I pushed for the transparent, rule-based design early on. I set up the repository and built the front-end proof of concept the team developed on (onboarding, document input, the reading workspace and the scrutability side panel), then refined the reader layout, progress tracking and theming.
 
-## Build for Production
+## Report
 
-From the `app` directory, generate a production build with:
-
-```bash
-npm run build
-```
-
-From the `app` directory, preview the production build locally with:
-
-```bash
-npm run preview
-```
-
----
-
-## Current Scope
-
-This repository contains the frontend proof-of-concept implementation of **Clarity Layer**.
-
-Adaptive behaviour is implemented using:
-- Rule-based decision logic
-- Explicit user preferences
-- Lightweight interaction tracking
-- Client-side persistence (localStorage)
-
-Backend integration can be added in future iterations via the shared API layer.
-
----
-
-## Demo Flow
-
-1. Complete onboarding (choose support level and optional stereotype).
-2. Paste text or simulate document upload.
-3. Enable chunking or bionic reading.
-4. Scroll slowly to trigger adaptive prompts.
-5. Open glossary terms.
-6. Finish session to view summary analytics.
-
----
-
-## Project Structure
-
-``` 
-app/
-  src/
-    app/             # App-level routing
-    features/        # Feature modules (auth, documents, onboarding, personas, reader, summary)
-    shared/          # Shared API, layout, and state
-    components/      # Reusable UI components (shadcn)
-    lib/             # Utilities
-docs/                # Reports, diagrams, documentation
-```
-
----
+The full project report covers the user model, use cases, architecture, adaptive approach, evaluation and limitations: **[Clarity-Layer-Final-Report.pdf](docs/Clarity-Layer-Final-Report.pdf)**
 
 ## License
 
-This project is licensed under the MIT License.
-See the LICENSE file for details.
-
----
-
-## Authors
-
-- Leah Weldon
-- Martha Ryan
-- Petra Marcokova
-- Tanmay Dilip Birari
-- Liam Byrne
-
----
+[MIT](LICENSE) © Team Kojack
