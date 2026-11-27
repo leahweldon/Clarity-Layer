@@ -9,16 +9,21 @@
   <img src="https://img.shields.io/badge/React-19-61dafb" alt="React 19">
   <img src="https://img.shields.io/badge/TypeScript-strict-3178c6" alt="TypeScript">
   <img src="https://img.shields.io/badge/Vite-7-646cff" alt="Vite 7">
-  <img src="https://img.shields.io/badge/license-MIT-green" alt="MIT licence">
 </p>
 
-![Onboarding with live bionic-reading preview and persona presets](docs/assets/onboarding.png)
+<p align="center">
+  <img src="docs/assets/walkthrough.gif" alt="A reading session in Clarity Layer: choosing a persona, reading with bionic emphasis and chunking, a glossary lookup, an automatic adaptation with undo, the Why log and the session summary" width="880">
+</p>
+
+<p align="center"><em>A short session: pick the Dyslexia Support persona, read with bionic emphasis and chunking, look up a glossary term, reread a passage and watch the system adapt, undo it, then check the <strong>Why</strong> log and the session summary. Sped up, with a short idle wait trimmed.</em></p>
 
 Reading tools tend to offer a zoom button and a dark mode, and leave the reader to fix everything else. Clarity Layer adapts how a document is presented (chunking dense passages, bionic emphasis, glossary support, typography) based on the reader's stated preferences and simple behavioural signals like rereading and long pauses. The defining constraint is **scrutability**: every adaptation is logged, explained in plain language and reversible.
 
 Built by Team Kojack for CS7IS5 Adaptive Applications at Trinity College Dublin (2026).
 
 ## Features
+
+![Onboarding with live bionic-reading preview and persona presets](docs/assets/onboarding.png)
 
 - **Onboarding with persona presets:** Default, ADHD Focus, Dyslexia Support and Visual Impairment profiles solve the cold-start problem; every setting stays editable, with a live preview.
 - **Adaptive reading aids:** chunking, bionic reading, glossary highlighting with a personal dictionary, and font size, spacing, line width and theme controls.
@@ -41,7 +46,7 @@ The user model has three layers, kept separate so the interface can always show 
 
 ![Layered user model: explicit inputs and implicit signals feed the model, which drives the adaptation engine](docs/assets/user-model.png)
 
-Adaptation is deliberately **rule-based rather than learned**. A machine-learned model might adapt more precisely, but its decisions would be hard to explain, and the *Why* panel would have nothing honest to show. Every prompt can be traced to a specific trigger.
+Adaptation is deliberately **rule-based rather than learned**, so every decision can be explained: each prompt traces back to a specific trigger, and the *Why* panel always has a concrete answer to show.
 
 **Evaluation (scenario-based):** adaptive prompts triggered correctly in 5 of 5 scenarios, accepted prompts updated the user model in the same render cycle, all 4 persona presets applied the correct configuration, and Layout Lock suppressed 100% of prompts.
 
@@ -88,8 +93,4 @@ app/src/
 
 ## Report
 
-The full project report covers the user model, use cases, architecture, adaptive approach, evaluation and limitations: **[Clarity-Layer-Final-Report.pdf](docs/Clarity-Layer-Final-Report.pdf)**
-
-## License
-
-[MIT](LICENSE) © Team Kojack
+The full project report covers the user model, use cases, architecture, adaptive approach and evaluation: **[Clarity-Layer-Final-Report.pdf](docs/Clarity-Layer-Final-Report.pdf)**
